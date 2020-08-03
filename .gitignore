@@ -1,8 +1,9 @@
-# Project related files to ignore
-data
-logs
+# IDE setting files
 .idea
 .vscode
+
+# Log files
+*.log
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
