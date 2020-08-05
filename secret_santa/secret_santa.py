@@ -30,11 +30,11 @@ def shuffle(participants: pd.DataFrame, simple_mode: bool = True, criteria: int 
     if simple_mode:
         givers, receivers = _shuffle_by_name(participants)
     else:
+        criteria = len(participants.columns) - 1 if not criteria else criteria
         if criteria < 0 or criteria > 5:
             raise ValueError(f"Wrong value for argument `criteria`: expected positive number lower or equal to 5, "
                              f"got {criteria} instead.")
 
-        criteria = len(participants.columns) if not criteria else criteria
         givers, receivers = _shuffle_by_criteria(participants, criteria)
 
     return [SantaPair(*pair) for pair in list(zip(givers, receivers))]
