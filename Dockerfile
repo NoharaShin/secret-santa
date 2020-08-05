@@ -12,6 +12,8 @@ RUN pip install -r requirements.txt
 
 # copy the content of the local src directory to the working directory
 COPY ./api .
+COPY ./data .
+COPY ./secret_santa .
 
 # command to run on container start
 CMD ["uvicorn", "server:app", "--reload"]

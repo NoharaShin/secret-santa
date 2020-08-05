@@ -2,7 +2,7 @@
 
 
 class SantaPair(object):
-    def __init__(self, giver: str, receiver: str):
+    def __init__(self, giver: str, receiver: str) -> None:
         """
         :param giver: Name of the person giving the present.
         :param receiver: Name of the person receiving the present.
