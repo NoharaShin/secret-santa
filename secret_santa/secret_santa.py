@@ -2,8 +2,11 @@
 Module to determine randomly (given a list of participants) the pairs of present giver-receiver of a Secret Santa.
 The list of participants should be a pandas DataFrame.
 Determining the pairs of present giver-receiver can be made over 6 exclusion criteria at most,
-i.e. the name of the participants plus uo to 5 more additional exclusion criteria.
+i.e. the name of the participants plus up to 7 more additional exclusion criteria.
+Why 7? Because it is a magical number according to the psychologist George A. Miller (also referred to as Miller's law).
+The law states that the number of objects an average human can hold in short-term memory is 7 ± 2.
 """
+
 import random
 
 import pandas as pd
@@ -21,7 +24,7 @@ def shuffle(participants: pd.DataFrame, simple_mode: bool = True, criteria: int 
     :param criteria: Number of criteria over which to perform the shuffle. The default value is None and in that case,
         the number of criteria is inferred from the number of columns of the `participants` DataFrame
         (i.e. the column `name` plus all the remaining columns). If provided, the value of `criteria`
-        must be lower than 5. If `simple_mode` is set to True, `criteria` is not taken into consideration as
+        must be lower than 7. If `simple_mode` is set to True, `criteria` is not taken into consideration as
         the shuffle is going to be made over the column `name` only.
     :return: The list of named tuples `SantaPair` representing a pair of gift giver and his/her respective receiver.
     """
@@ -31,8 +34,8 @@ def shuffle(participants: pd.DataFrame, simple_mode: bool = True, criteria: int 
         givers, receivers = _shuffle_by_name(participants)
     else:
         criteria = len(participants.columns) - 1 if not criteria else criteria
-        if criteria < 0 or criteria > 5:
-            raise ValueError(f"Wrong value for argument `criteria`: expected positive number lower or equal to 5, "
+        if criteria < 0 or criteria > 7:
+            raise ValueError(f"Wrong value for argument `criteria`: expected positive number lower or equal to 7, "
                              f"got {criteria} instead.")
 
         givers, receivers = _shuffle_by_criteria(participants, criteria)
@@ -104,6 +107,23 @@ def _get_potential_receivers(participants: pd.DataFrame, participant: pd.Series,
     :param criteria: Number of criteria to consider to determine the list of possible receivers for the participant.
     :return: The names of all the possible gift receivers for the provided participant.
     """
+    if criteria == 7:
+        return participants.loc[
+            (participants["criterion-7"] != participant["criterion-7"])
+            & (participants["criterion-6"] != participant["criterion-6"])
+            & (participants["criterion-5"] != participant["criterion-5"])
+            & (participants["criterion-4"] != participant["criterion-4"])
+            & (participants["criterion-3"] != participant["criterion-3"])
+            & (participants["criterion-2"] != participant["criterion-2"])
+            & (participants["criterion-1"] != participant["criterion-1"])]["name"]
+    if criteria == 6:
+        return participants.loc[
+            (participants["criterion-6"] != participant["criterion-6"])
+            & (participants["criterion-5"] != participant["criterion-5"])
+            & (participants["criterion-4"] != participant["criterion-4"])
+            & (participants["criterion-3"] != participant["criterion-3"])
+            & (participants["criterion-2"] != participant["criterion-2"])
+            & (participants["criterion-1"] != participant["criterion-1"])]["name"]
     if criteria == 5:
         return participants.loc[
             (participants["criterion-5"] != participant["criterion-5"])
