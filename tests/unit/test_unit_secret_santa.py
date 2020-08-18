@@ -9,7 +9,7 @@ import pandas as pd
 import secret_santa
 from models.santa_pair import SantaPair
 
-APP_PATH = Path(__file__).resolve().parents[3]
+APP_PATH = Path(__file__).resolve().parents[2]
 
 
 class TestSecretSanta(unittest.TestCase):
@@ -60,19 +60,19 @@ class TestSecretSanta(unittest.TestCase):
         except ValueError as error:
             self.assertEqual(
                 str(error),
-                "Wrong value for argument `criteria`: expected positive number lower or equal to 5, got -1 instead.")
+                "Wrong value for argument `criteria`: expected positive number lower or equal to 7, got -1 instead.")
 
-        # Value of criteria is higher than 5
+        # Value of criteria is higher than 7
         # 1. Test that ValueError is raised as expected
         with self.assertRaises(ValueError):
-            secret_santa.shuffle(self.participants, simple_mode=False, criteria=6)
+            secret_santa.shuffle(self.participants, simple_mode=False, criteria=8)
         # 2. Test that error message is the expected one
         try:
-            secret_santa.shuffle(self.participants, simple_mode=False, criteria=6)
+            secret_santa.shuffle(self.participants, simple_mode=False, criteria=8)
         except ValueError as error:
             self.assertEqual(
                 str(error),
-                "Wrong value for argument `criteria`: expected positive number lower or equal to 5, got 6 instead.")
+                "Wrong value for argument `criteria`: expected positive number lower or equal to 7, got 8 instead.")
 
     def test__rename_columns(self):
         """Test if the function _rename_columns() renames the header of the input DataFrame as expected."""
